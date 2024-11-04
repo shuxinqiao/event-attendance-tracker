@@ -81,11 +81,38 @@ func eventsHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(events)
 }
 
+// checkInHandler processes check-in requests
+func checkInHandler(w http.ResponseWriter, r *http.Request) {
+	var checkInData struct {
+		UserID  int `json:"userId"`
+		EventID int `json:"eventId"`
+	}
+
+	// Decode the JSON body into checkInData
+	err := json.NewDecoder(r.Body).Decode(&checkInData)
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	// Insert the check-in record into the checkins table
+	_, err = db.Exec("INSERT INTO checkins (user_id, event_id) VALUES ($1, $2)", checkInData.UserID, checkInData.EventID)
+	if err != nil {
+		http.Error(w, "Failed to check in", http.StatusInternalServerError)
+		return
+	}
+
+	// Respond with a success message
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Check-in successful"))
+}
+
 func main() {
 	initDB()
 
 	http.Handle("/login", corsMiddleware(http.HandlerFunc(loginHandler)))
-	http.Handle("/events", corsMiddleware(http.HandlerFunc(eventsHandler))) // Add the events route
+	http.Handle("/events", corsMiddleware(http.HandlerFunc(eventsHandler)))
+	http.Handle("/checkin", corsMiddleware(http.HandlerFunc(checkInHandler)))
 
 	http.Handle("/", corsMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Welcome to the Event Attendance System!")

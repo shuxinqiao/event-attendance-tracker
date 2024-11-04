@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import api from "./api";
 
-const CheckIn = ({ eventId }) => {
-    const [userId, setUserId] = useState('');
-
+const CheckIn = ({ userId, eventId }) => {
     const handleCheckIn = async () => {
         try {
             const response = await api.post('/checkin', { userId, eventId });
@@ -16,8 +14,6 @@ const CheckIn = ({ eventId }) => {
 
     return (
         <div>
-            <h2>Check In</h2>
-            <input type="text" placeholder="User ID" value={userId} onChange={(e) => setUserId(e.target.value)} />
             <button onClick={handleCheckIn}>Check In</button>
         </div>
     );

@@ -4,7 +4,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import CheckIn from './CheckIn';
 
-const Events = () => {
+const Events = ({ userId }) => {
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const Events = () => {
                 <Column field='name' header="Event Name" />
                 <Column field='date' header="Date" />
                 <Column field='location' header="Location" />
-                <Column header='Check In' body={(rowData) => <CheckIn eventId={rowData.id} />} />
+                <Column header="Check In" body={(rowData) => <CheckIn eventId={rowData.id} userId={userId} />} />
             </DataTable>
         </div>
     );

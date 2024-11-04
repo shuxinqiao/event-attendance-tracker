@@ -11,7 +11,7 @@ function App() {
 	return (
 		<div className="App">
 			<h1>Event Attendance System</h1>
-			{user ? <Events /> : <Login setUser={setUser} />}
+			{user ? <Events userId={user.id} /> : <Login setUser={setUser} />}
 		</div>
 	);
 }
