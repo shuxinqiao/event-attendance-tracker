@@ -20,11 +20,11 @@ In the project root, create a `.env` file with the following variables:
 export POSTGRES_USER=your_postgres_user
 export POSTGRES_PASSWORD=your_postgres_password
 export POSTGRES_DB=your_database_name
-export SUPERADMIN_USERNAME="'superadmin'"
-export SUPERADMIN_PASSWORD="'superadminpassword'"
+export SUPERADMIN_USERNAME=superadmin
+export SUPERADMIN_PASSWORD=superadminpassword
 ```
 
-Use `"'var_name'"` to have `'var_name'`in real script.
+- Quick Tip: Use `"'var_name'"` to have `'var_name'`in real script.
 
 #### Step 2: Substitude Placeholder by Your `.env` File Setting
 
