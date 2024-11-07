@@ -22,8 +22,3 @@ CREATE TABLE IF NOT EXISTS checkins (
     event_id INT REFERENCES events(id),
     checkin_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
--- Insert super_admin with a default password
-INSERT INTO users (username, password, role) VALUES
-    ($SUPERADMIN_USERNAME, $SUPERADMIN_PASSWORD, 'super_admin')
-ON CONFLICT DO NOTHING;

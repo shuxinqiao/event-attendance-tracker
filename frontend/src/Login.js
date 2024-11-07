@@ -4,12 +4,14 @@ import api from './api';
 const Login = ({ setUser }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [role, setRole] = useState('')
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
             // Call the backend login endpoint
-            const response = await api.post('/login', { username, password });
+            setRole('super_admin');
+            const response = await api.post('/login', { username, password, role });
             
             // Update the user state with the response data
             setUser(response.data);

@@ -1,6 +1,11 @@
 # event-attendance-tracker
 A web-based event attendance system with user login, admin controls, and check-in functionality, built with Go, React, and Docker.
 
+## Contents
+- [Setup Procedure](#setup-procedure) - Setup for your specific settings
+- [Scripts](#script) - Guide for a easy and quick management
+
+
 ## Setup Procedure
 
 ### Database Setup
@@ -24,8 +29,11 @@ Use `"'var_name'"` to have `'var_name'`in real script.
 #### Step 2: Substitude Placeholder by Your `.env` File Setting
 
 ```bash
-$ source .env
-$ envsubst < db/init.sql > db/init_actual.sql
+POSTGRES_USER --> username of db admin (complete permission)
+POSTGRES_PASSWORD --> password of db admin
+POSTGRES_DB --> name of db
+SUPERADMIN_USERNAME --> name of super admin user (for account management)
+SUPERADMIN_PASSWORD --> password of super admin user
 ```
 
 #### Step 3: Start Postgres Docker
@@ -59,8 +67,14 @@ These commands control all containers in the Docker Compose setup, including Ngi
    $ make start-project
    ```
 
-3. **Rebuild and Start the Project**:
-   - Stops and removes all containers, rebuilds them, and starts them up with the latest changes.
+3. **Restart the Project**:
+   - Stops and removes all containers ***without touching mount data***, rebuilds them, and starts them up with the latest changes.
+    ```bash
+    $ make restart-project
+    ```
+
+3. **Reset the Project**:
+   - Stops and removes all containers ***and their mount data***, rebuilds them, and starts them up with the latest changes.
     ```bash
     $ make reset-project
     ```
@@ -78,19 +92,19 @@ These commands only control the PostgreSQL container, useful if you need to rest
 2. **Stop PostgreSQL**:
     - Stops only the PostgreSQL container.
     ```bash
-    make stop-db
+    $ make stop-db
     ```
 
 3. **Rebuild PostgreSQL with Fresh Data**:
     - Stops the PostgreSQL container, removes any existing data, and starts a fresh instance with the initial data.
     ```bash
-    make reset-db
+    $ make reset-db
     ```
 
 4. **Access the PostgreSQL Shell**:
     - Opens an interactive psql shell for accessing the PostgreSQL database directly. Use this to run SQL commands manually.
     ```bash
-    make db-shell
+    $ make db-shell
     ```
 
 ### Important Notes

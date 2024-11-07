@@ -9,9 +9,14 @@ start-project:
 stop-project:
 	sudo docker-compose down
 
-# Rebuild whole project docker
-reset-project:
+# Restart whole project docker
+restart-project:
 	sudo docker-compose down
+	sudo docker-compose up --build -d
+
+# Reset whole project docker
+reset-project:
+	sudo docker-compose down -v
 	sudo docker-compose up --build -d
 
 

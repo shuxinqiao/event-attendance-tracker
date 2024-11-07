@@ -1,52 +1,18 @@
 package main
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/shuxinqiao/event-attendance-tracker/backend/handlers"
+	"github.com/shuxinqiao/event-attendance-tracker/backend/middleware"
 )
 
 type User struct {
 	ID       int    `json:"id"`
 	Username string `json:"username"`
-}
-
-func loginHandler(w http.ResponseWriter, r *http.Request) {
-	var creds struct {
-		Username string `json:"username"`
-		Password string `json:"password"`
-	}
-	err := json.NewDecoder(r.Body).Decode(&creds)
-	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
-		return
-	}
-
-	var user User
-	var dbPassword string
-
-	// Query user and password from the database
-	err = db.QueryRow("SELECT id, username, password FROM users WHERE username=$1", creds.Username).
-		Scan(&user.ID, &user.Username, &dbPassword)
-	if err == sql.ErrNoRows {
-		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
-		return
-	} else if err != nil {
-		http.Error(w, "Server error", http.StatusInternalServerError)
-		return
-	}
-
-	// Check if password matches
-	if creds.Password != dbPassword {
-		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
-		return
-	}
-
-	// Send user information as response
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(user)
 }
 
 // Event struct represents a single event
@@ -109,12 +75,19 @@ func checkInHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	initDB()
+	createSuperAdmin()
 
-	http.Handle("/login", corsMiddleware(http.HandlerFunc(loginHandler)))
-	http.Handle("/events", corsMiddleware(http.HandlerFunc(eventsHandler)))
-	http.Handle("/checkin", corsMiddleware(http.HandlerFunc(checkInHandler)))
+	h := &handlers.Handler{DB: db}
 
-	http.Handle("/", corsMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	http.Handle("/register", middleware.CORS(http.HandlerFunc(h.RegisterHandler)))
+	http.Handle("/login", middleware.CORS(http.HandlerFunc(h.LoginHandler)))
+
+	// http.Handle("/checkin", corsMiddleware(http.HandlerFunc(checkInHandler)))
+
+	// Protected route example
+	// http.Handle("/protected", middleware.AuthMiddleware(http.HandlerFunc(ProtectedHandler)))
+
+	http.Handle("/", middleware.CORS(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Welcome to the Event Attendance System!")
 	})))
 
