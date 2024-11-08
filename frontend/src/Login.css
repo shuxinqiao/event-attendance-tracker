@@ -1,0 +1,49 @@
+.login-page-wrap {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20%;
+    height: 100%;
+    width: 100%;
+    background-image: url('assets/loginbg.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+}
+
+.title {
+    justify-content: center;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.subtitle {
+    justify-content: center;
+    text-align: center;
+}
+
+.form-wrap {
+    display: flex;
+    flex-direction: column;
+    margin: 0 5%;
+}
+
+.input-wrap {
+    display: flex;
+    margin-top: 1.7rem;
+}
+
+.input-box {
+    flex-grow: 1;
+    border-radius: 9px;
+    padding: 12px 20px;
+}
+
+label {
+    margin-left: 10px;
+}
+
+.login-btn {
+    justify-content: center;
+    padding: 10px 0px;
+    margin-top: 50px;
+}

@@ -6,43 +6,55 @@ A web-based event attendance system with user login, admin controls, and check-i
 - [Scripts](#script) - Guide for a easy and quick management
 
 
+
 ## Setup Procedure
 
-### Database Setup
+This project uses Docker and Docker-compose to set up Nginx, GO backend, React Web and PostgreSQL database. 
 
-This project uses Docker and Docker-compose to set up a PostgreSQL database. Follow these instructions to configure the database with environment-specific credentials.
+Follow the following instructions to configure the docker with environment-specific variables.
 
-#### Step 1: Create a `.env` File
+
+### Step 1: Create a `.env` File
 
 In the project root, create a `.env` file with the following variables:
 
 ```env
-export POSTGRES_USER=your_postgres_user
-export POSTGRES_PASSWORD=your_postgres_password
-export POSTGRES_DB=your_database_name
-export SUPERADMIN_USERNAME=superadmin
-export SUPERADMIN_PASSWORD=superadminpassword
+export POSTGRES_USER=Username --> username of db admin (complete permission)
+export POSTGRES_PASSWORD=Password --> password of db admin
+export POSTGRES_DB=DBname --> name of db
+export SUPERADMIN_USERNAME=Adminname --> name of super admin user (for account management)
+export SUPERADMIN_PASSWORD=Adminpassword --> password of super admin user
+export IP_ADDRESS=localhost --> standard ipv4 address
 ```
+
+***!!Notice***: `--> etc` are comments for understanding, do not enter them into `.env` file.
 
 - Quick Tip: Use `"'var_name'"` to have `'var_name'`in real script.
+- `IP_ADDRESS` is used for testing, CORS will become same origin if using build static page.
 
-#### Step 2: Substitude Placeholder by Your `.env` File Setting
 
-```bash
-POSTGRES_USER --> username of db admin (complete permission)
-POSTGRES_PASSWORD --> password of db admin
-POSTGRES_DB --> name of db
-SUPERADMIN_USERNAME --> name of super admin user (for account management)
-SUPERADMIN_PASSWORD --> password of super admin user
-```
+### Step 2: Change ports in `docker-compose.yml`
 
-#### Step 3: Start Postgres Docker
+Change port `- "80:80"` (external : inside docker) in `nginx:` to fit your needs.
 
-```bash
-$ make start-db
-```
 
-More details about easier control over postgres container see [script](#script).
+### Step 3: Build React web
+
+- Change `baseURL` to your real serving IP in `frontend/api.js`.
+- ```/frontend$ npm run build``` to build React web into static.
+
+
+### Step 4: Build docker
+
+Run `make start-project`. 
+
+Details about make commands, please read next section [Script](#script).
+
+
+### Tips
+
+- Remember to `$ make restart-project` every time you made any changes and want to see its effect, it will rebuild the docker with the change you made.
+- During test time, you can use `$ npm start` to have hot-update development React, but be careful about any IP settings for CORS problem.
 
 
 ## Script

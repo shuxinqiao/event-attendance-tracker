@@ -8,6 +8,7 @@ import (
 
 	"github.com/shuxinqiao/event-attendance-tracker/backend/handlers"
 	"github.com/shuxinqiao/event-attendance-tracker/backend/middleware"
+	"github.com/shuxinqiao/event-attendance-tracker/backend/utils"
 )
 
 type User struct {
@@ -74,8 +75,18 @@ func checkInHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	// Database Setup
 	initDB()
 	createSuperAdmin()
+
+	// Generate a 32-byte random key for JWT signing
+	jwtKey, err := utils.GenerateRandomKey(32)
+	if err != nil {
+		log.Fatal("Failed to generate JWT key:", err)
+	}
+
+	// Initialize the utils package with this key
+	utils.InitializeJWTKey(jwtKey)
 
 	h := &handlers.Handler{DB: db}
 

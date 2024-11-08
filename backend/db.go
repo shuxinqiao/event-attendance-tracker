@@ -38,7 +38,6 @@ func initDB() {
 	}
 
 	log.Fatalf("Failed to connect to the database after multiple attempts: %v", err)
-	return
 }
 
 // createSuperAdmin checks if a super admin exists and creates one if necessary

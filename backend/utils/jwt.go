@@ -1,12 +1,28 @@
 package utils
 
 import (
+	"crypto/rand"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
 )
 
-var jwtKey = []byte("your_secret_key") // Replace with a secure key
+var jwtKey []byte
+
+// InitializeJWTKey sets the JWT signing key
+func InitializeJWTKey(key []byte) {
+	jwtKey = key
+}
+
+// GenerateRandomKey creates a secure random key of specified length
+func GenerateRandomKey(length int) ([]byte, error) {
+	key := make([]byte, length)
+	_, err := rand.Read(key)
+	if err != nil {
+		return nil, err
+	}
+	return key, nil
+}
 
 // Claims defines the JWT payload
 type Claims struct {

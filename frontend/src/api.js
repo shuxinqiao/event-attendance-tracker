@@ -2,10 +2,12 @@ import axios from 'axios';
 
 // Create an axios instance with default settings
 const api = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://192.168.2.160:80/api/',
+    // baseURL: 'http://localhost:80/api/',
     header: {
         'Content-Type': 'application/json',
     },
+    withCredentials: true,
 });
 
 // Interceptor for logging or handling errors globally
