@@ -20,5 +20,6 @@ CREATE TABLE IF NOT EXISTS checkins (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id),
     event_id INT REFERENCES events(id),
-    checkin_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    service_job VARCHAR(100),
+    checkin_time TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP AT TIME ZONE 'UTC'
 );

@@ -22,6 +22,13 @@ type Handler struct {
 
 // RegisterHandler registers a new user
 func (h *Handler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
+	// Retrieve user claims from the context
+	// claims, ok := r.Context().Value("claims").(*utils.Claims)
+	// if !ok {
+	// 	http.Error(w, "User not authenticated", http.StatusUnauthorized)
+	// 	return
+	// }
+
 	var user User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)

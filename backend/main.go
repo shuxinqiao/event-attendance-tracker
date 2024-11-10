@@ -90,7 +90,7 @@ func main() {
 
 	h := &handlers.Handler{DB: db}
 
-	http.Handle("/register", middleware.CORS(http.HandlerFunc(h.RegisterHandler)))
+	http.Handle("/register", middleware.CORS(middleware.AuthMiddleware(http.HandlerFunc(h.RegisterHandler))))
 	http.Handle("/login", middleware.CORS(http.HandlerFunc(h.LoginHandler)))
 
 	// http.Handle("/checkin", corsMiddleware(http.HandlerFunc(checkInHandler)))
